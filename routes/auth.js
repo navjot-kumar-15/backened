@@ -47,12 +47,12 @@ router.post(
       });
       // Applying JWT authentication below
       const data = {
-        User: {
-          id: User.id,
+        user: {
+          id: user.id,
         },
       };
       const jwtAuthToken = jwt.sign(data, JWT_SECRET);
-      console.log(jwtAuthToken);
+      // console.log(jwtAuthToken);
       res.json({ jwtAuthToken });
     } catch (error) {
       console.error(error.message);
