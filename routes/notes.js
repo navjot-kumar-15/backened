@@ -58,7 +58,6 @@ router.post(
 
 router.put("/updatenote/:id", fetchuser, async (req, res) => {
   const { title, description, tag } = req.body;
-
   try {
     // creating newNote object
     const newNote = {};
@@ -71,18 +70,15 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
     if (tag) {
       newNote.tag = tag;
     }
-
     //   Find the note to be updated and update it
     let note = await Notes.findById(req.params.id);
     if (!note) {
       return res.status(404).send("Not Found");
     }
-
     //   Checking the user is requesting to update is same or not
     if (note.user.toString() !== req.user.id) {
       return res.status(401).send("Note Allowed");
     }
-
     note = await Notes.findByIdAndUpdate(
       req.params.id,
       { $set: newNote },
@@ -99,20 +95,16 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 // Delete an existing notes using : Delete -> method  "api/auth/deletenote". Login required
 
 router.delete("/deletenote/:id", fetchuser, async (req, res) => {
-  const { title, description, tag } = req.body;
-
   try {
     //   Find the note to be deleted and deleted it
     let note = await Notes.findById(req.params.id);
     if (!note) {
       return res.status(404).send("Not Found");
     }
-
     //   Checking the user is requesting to update is same or not
     if (note.user.toString() !== req.user.id) {
       return res.status(401).send("Note Allowed");
     }
-
     note = await Notes.findByIdAndDelete(req.params.id);
     res.json({ Success: "Note has been deleted", note: note });
   } catch (error) {
