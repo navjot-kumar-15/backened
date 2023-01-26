@@ -63,7 +63,7 @@ router.post(
 // <<<<<<<<<<=============================Login Route============================>>>>>>>>>>
 
 // ROUTE :2;
-// Authenticate a user  using : POST -> method  "api/auth/login".No login require.
+// Authenticate a user  using : POST -> method  "api/auth/login".
 router.post(
   "/login",
   // Validator using
@@ -75,7 +75,8 @@ router.post(
     // If there are error then shows bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      let success = false;
+      return res.status(400).json({ success, errors: errors.array() });
     }
 
     // Destructing from the req body
@@ -105,7 +106,8 @@ router.post(
         },
       };
       const jwtAuthToken = jwt.sign(data, JWT_SECRET);
-      res.json({ jwtAuthToken });
+      success = true;
+      res.json({ success, jwtAuthToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal server error");
