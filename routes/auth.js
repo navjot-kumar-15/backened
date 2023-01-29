@@ -72,11 +72,11 @@ router.post(
     body("password", "Password cannot be blank ").exists(),
   ],
   async (req, res) => {
+    let success = false;
     // If there are error then shows bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      let success = false;
-      return res.status(400).json({ success, errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
 
     // Destructing from the req body
@@ -86,17 +86,21 @@ router.post(
       let user = await User.findOne({ email });
       // If user not exist then show this error
       if (!user) {
-        return res
-          .status(400)
-          .json({ error: "Please try to login with correct credentials" });
+        success = false;
+        return res.status(400).json({
+          success,
+          error: "Please try to login with correct credentials",
+        });
       }
 
       // Now comparing the password which is entered by the user and with the database
       const passCom = await bcrypt.compare(password, user.password);
-      if (!password) {
-        return res
-          .status(400)
-          .json({ error: "Please try to login with correct credentials" });
+      if (!passCom) {
+        success = false;
+        return res.status(400).json({
+          success,
+          error: "Please try to login with correct credentials",
+        });
       }
 
       // Applying JWT authentication below
