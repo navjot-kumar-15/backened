@@ -6,7 +6,8 @@ const { exists } = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
-const JWT_SECRET = "navjotisagoodb$oy";
+require("dotenv").config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // <<<<<<<<<<=======================Create User Route=======================>>>>>>>>>>
 

@@ -1,3 +1,5 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-mongoose.connect("mongodb://127.0.0.1:27017/scheduler");
+const BASE_URL = process.env.BASE_URL;
+mongoose.connect(`${BASE_URL}/scheduler`);
